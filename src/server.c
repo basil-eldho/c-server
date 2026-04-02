@@ -3,9 +3,10 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #define PORT 3000
-#define BUFFER_SIZE 4096
+#define BUFFER_SIZE 65535
 
 struct header {
     char *name;
@@ -20,7 +21,7 @@ struct request {
     struct header headers[32];
 };
 
-int parse_request(char *buf, int n, struct request *req) {
+int parse_request(char *buf, ssize_t n, struct request *req) {
     req->method = buf;
 
     char *sp = memchr(buf, ' ', n);
@@ -99,7 +100,7 @@ int main() {
         fflush(stdout);
 
         char buf[BUFFER_SIZE];
-        int n = read(client_fd, buf, sizeof(buf));
+        ssize_t n = read(client_fd, buf, sizeof(buf));
         if (n == -1) {
             perror("read");
             return 1;
@@ -114,7 +115,28 @@ int main() {
 
         printf("parsed request: %s, %s, %d\n", req.method, req.path, req.protocol);
 
-        send_response(client_fd, 200, "Hello world\n");
+        if (strcmp(req.path, "/index.html") != 0) {
+            send_response(client_fd, 404, "Page Not Found\n");
+            close(client_fd);
+            continue;
+        }
+
+        int file_fd = open("./static/index.html",O_RDONLY);
+        if (file_fd == -1) {
+            send_response(client_fd, 404, "Page Not Found\n");
+            close(client_fd);
+            continue;
+        }
+
+        ssize_t flen = read(file_fd, buf, sizeof(buf));
+        if (flen == -1) {
+            perror("read");
+            return -1;
+        }
+        buf[flen] = '\0';
+        close(file_fd);
+
+        send_response(client_fd, 200, buf);
 
         close(client_fd);
     }

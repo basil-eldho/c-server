@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basil Eldho — Master Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0c0c0c;
+    --surface:   #141414;
+    --surface2:  #1a1a1a;
+    --border:    rgba(255,255,255,0.08);
+    --border2:   rgba(255,255,255,0.13);
+    --text:      #e6e4dc;
+    --muted:     #666460;
+    --subtle:    #999690;
+
+    --red:    #E24B4A;
+    --blue:   #378ADD;
+    --green:  #639922;
+    --amber:  #BA7517;
+    --purple: #7F77DD;
+    --gray:   #666460;
+
+    --red-dim:    rgba(226,75,74,0.12);
+    --blue-dim:   rgba(55,138,221,0.12);
+    --green-dim:  rgba(99,153,34,0.12);
+    --amber-dim:  rgba(186,117,23,0.12);
+    --purple-dim: rgba(127,119,221,0.12);
+  }
+
+  body {
+    font-family: 'Geist', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 56px 60px 72px;
+    max-width: 1300px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .header { margin-bottom: 48px; }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 14px;
+    color: var(--muted);
+    font-family: 'Geist Mono', monospace;
+  }
+
+  /* ── Section label ── */
+  .label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  /* ── Divider ── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  /* ── Objectives ── */
+  .obj-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .obj-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 16px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .obj-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 10px 0 0 10px;
+  }
+  .obj-card.c-red::before    { background: var(--red); }
+  .obj-card.c-blue::before   { background: var(--blue); }
+  .obj-card.c-green::before  { background: var(--green); }
+  .obj-card.c-amber::before  { background: var(--amber); }
+  .obj-card.c-purple::before { background: var(--purple); }
+
+  .obj-num {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .obj-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+  .obj-sub {
+    font-size: 12px;
+    color: var(--subtle);
+    line-height: 1.4;
+  }
+
+  /* ── Timeline ── */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .phase-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .phase-header::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .phase.p-green .phase-header::after  { background: var(--green); }
+  .phase.p-blue  .phase-header::after  { background: var(--blue); }
+  .phase.p-amber .phase-header::after  { background: var(--amber); }
+  .phase.p-red   .phase-header::after  { background: var(--red); }
+
+  .phase-period {
+    font-family: 'Geist Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .phase-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .phase-body { padding: 14px 16px; }
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 10px;
+    font-size: 12.5px;
+    color: var(--subtle);
+    line-height: 1.4;
+  }
+  .task:last-child { margin-bottom: 0; }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .dot.red    { background: var(--red); }
+  .dot.blue   { background: var(--blue); }
+  .dot.green  { background: var(--green); }
+  .dot.amber  { background: var(--amber); }
+  .dot.gray   { background: var(--gray); }
+
+  /* ── Domains ── */
+  .domain-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .domain-card {
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .domain-card.d1 { background: var(--red-dim); }
+  .domain-card.d2 { background: var(--blue-dim); }
+  .domain-card.d3 { background: var(--green-dim); }
+  .domain-card.d4 { background: var(--amber-dim); }
+
+  .domain-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .domain-card.d1 .domain-label { color: var(--red); }
+  .domain-card.d2 .domain-label { color: var(--blue); }
+  .domain-card.d3 .domain-label { color: var(--green); }
+  .domain-card.d4 .domain-label { color: var(--amber); }
+
+  .domain-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .domain-items {
+    font-size: 12px;
+    color: var(--subtle);
+    line-height: 1.7;
+  }
+
+  /* ── Priority bar ── */
+  .bar-wrap {
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    height: 38px;
+    border: 1px solid var(--border);
+  }
+  .bar-seg {
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    white-space: nowrap;
+  }
+  .bar-seg.s-red    { background: var(--red);   width: 30%; }
+  .bar-seg.s-blue   { background: var(--blue);  width: 27%; }
+  .bar-seg.s-green  { background: var(--green); width: 25%; }
+  .bar-seg.s-amber  { background: var(--amber); width: 18%; }
+
+  .legend {
+    display: flex;
+    gap: 24px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--subtle);
+  }
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Master Roadmap</h1>
+  <p>Basil Eldho &nbsp;·&nbsp; Now → Oct 2026 &nbsp;·&nbsp; Full-time SWE</p>
+</div>
+
+<!-- Objectives -->
+<div class="label">Objectives</div>
+<div class="obj-grid">
+  <div class="obj-card c-red">
+    <div class="obj-num">01</div>
+    <div class="obj-title">Pass the coding screen</div>
+    <div class="obj-sub">DSA patterns — the gate to every interview loop</div>
+  </div>
+  <div class="obj-card c-blue">
+    <div class="obj-num">02</div>
+    <div class="obj-title">Win system design rounds</div>
+    <div class="obj-sub">Raft, KV store, DDIA depth</div>
+  </div>
+  <div class="obj-card c-green">
+    <div class="obj-num">03</div>
+    <div class="obj-title">Build real systems</div>
+    <div class="obj-sub">C server · shell · allocator · DNS</div>
+  </div>
+  <div class="obj-card c-amber">
+    <div class="obj-num">04</div>
+    <div class="obj-title">Land the role by Oct 2026</div>
+    <div class="obj-sub">Aug–Oct applications, full-time + CPT</div>
+  </div>
+  <div class="obj-card c-purple">
+    <div class="obj-num">05</div>
+    <div class="obj-title">Go deep long-term</div>
+    <div class="obj-sub">OS → networking → distributed → firmware</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Timeline -->
+<div class="label">Roadmap — Now to Oct 2026</div>
+<div class="phases">
+  <div class="phase p-green">
+    <div class="phase-header">
+      <div class="phase-period">Now → May</div>
+      <div class="phase-title">Foundation</div>
+    </div>
+    <div class="phase-body">
+      <div class="task"><span class="dot green"></span>Finish C server — all 10 phases</div>
+      <div class="task"><span class="dot green"></span>Write shell: fork, exec, pipes, signals</div>
+      <div class="task"><span class="dot green"></span>Write memory allocator from scratch</div>
+      <div class="task"><span class="dot red"></span>DSA daily — 2 problems/day, Neetcode 150</div>
+      <div class="task"><span class="dot amber"></span>Embedded weekends — RP2040 bare-metal</div>
+    </div>
+  </div>
+  <div class="phase p-blue">
+    <div class="phase-header">
+      <div class="phase-period">May → July</div>
+      <div class="phase-title">Distributed Systems</div>
+    </div>
+    <div class="phase-body">
+      <div class="task"><span class="dot blue"></span>Implement Raft consensus from scratch</div>
+      <div class="task"><span class="dot blue"></span>Build KV store (hash ring first)</div>
+      <div class="task"><span class="dot blue"></span>Read DDIA cover to cover</div>
+      <div class="task"><span class="dot green"></span>Papers: Raft, Dynamo, Spanner, MapReduce</div>
+      <div class="task"><span class="dot red"></span>DSA daily — continue Neetcode 150</div>
+    </div>
+  </div>
+  <div class="phase p-amber">
+    <div class="phase-header">
+      <div class="phase-period">July → Sept</div>
+      <div class="phase-title">Networking + Polish</div>
+    </div>
+    <div class="phase-body">
+      <div class="task"><span class="dot green"></span>DNS resolver from scratch</div>
+      <div class="task"><span class="dot green"></span>Add UDP to server</div>
+      <div class="task"><span class="dot green"></span>Read TCP/IP Illustrated Vol. 1</div>
+      <div class="task"><span class="dot red"></span>DSA ramp up — mock interviews begin</div>
+      <div class="task"><span class="dot blue"></span>System design mock interviews</div>
+    </div>
+  </div>
+  <div class="phase p-red">
+    <div class="phase-header">
+      <div class="phase-period">Aug → Oct</div>
+      <div class="phase-title">Application Season</div>
+    </div>
+    <div class="phase-body">
+      <div class="task"><span class="dot red"></span>DSA peak intensity — timed daily</div>
+      <div class="task"><span class="dot blue"></span>System design mock rounds</div>
+      <div class="task"><span class="dot gray"></span>Resume final pass + LinkedIn</div>
+      <div class="task"><span class="dot gray"></span>Apply: full-time + CPT internships</div>
+      <div class="task"><span class="dot gray"></span>Blog posts on Raft, KV store</div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Domains -->
+<div class="label">Four domains</div>
+<div class="domain-grid">
+  <div class="domain-card d1">
+    <div class="domain-label">Domain 1 · High priority</div>
+    <div class="domain-title">OS &amp; Systems</div>
+    <div class="domain-items">C server · Shell · Allocator<br>TLPI as reference · Kernel source later</div>
+  </div>
+  <div class="domain-card d2">
+    <div class="domain-label">Domain 2 · High priority</div>
+    <div class="domain-title">Networking</div>
+    <div class="domain-items">TCP/IP Illustrated · DNS resolver<br>UDP after C server · Skip QUIC for now</div>
+  </div>
+  <div class="domain-card d3">
+    <div class="domain-label">Domain 3 · Highest ROI</div>
+    <div class="domain-title">Distributed Systems</div>
+    <div class="domain-items">Raft · KV store · DDIA<br>Papers: Dynamo, Spanner, MapReduce</div>
+  </div>
+  <div class="domain-card d4">
+    <div class="domain-label">Domain 4 · Lower priority</div>
+    <div class="domain-title">Embedded Firmware</div>
+    <div class="domain-items">RP2040 bare-metal · UART/SPI/I2C<br>Weekends only · Complements OS domain</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- Priority bar -->
+<div class="label">Time allocation</div>
+<div class="bar-wrap">
+  <div class="bar-seg s-red">DSA 30%</div>
+  <div class="bar-seg s-blue">Distributed 27%</div>
+  <div class="bar-seg s-green">OS / Networking 25%</div>
+  <div class="bar-seg s-amber">Embedded 18%</div>
+</div>
+<div class="legend">
+  <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span>DSA — gates you into every loop</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--blue)"></span>Distributed — highest interview signal</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span>OS/Networking — progressing via projects</div>
+  <div class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span>Embedded — weekends, long-term depth</div>
+</div>
+
+</body>
+</html>
